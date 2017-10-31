@@ -9,6 +9,7 @@
 #include "Math.h"
 
 #include <menu.h>
+#include "Util/Logger.hpp"
 
 Player player;				//Reference to actual player
 Ped playerPed;				//Reference to actual ped
@@ -1109,7 +1110,10 @@ void onMenuExit()
 	isInMenu = false;
 }
 void initialize() {
-
+    logger.SetFile(GetCurrentModulePath() + "LeFixSpeedo\\LeFixSpeedo.log");
+    logger.Clear();
+    logger.Write("LeFixSpeedo " + std::string(DISPLAY_VERSION));
+    vehData.init();
 	std::string path = GetCurrentModulePath(); // includes trailing slash
 	path = path + "LeFixSpeedo\\settings";
 
@@ -1219,7 +1223,7 @@ void updateMenu()
 	if (menu.CurrentMenu("mainmenu"))
 	{
 		menu.Title("Speedometer");
-		menu.Subtitle("v1.3 by LeFix");
+		menu.Subtitle(std::string(DISPLAY_VERSION) + " by LeFix");
 
 		menu.BoolOption("Mod Enabled", Settings::isActive, { "Enable/Disable the entire mod." });
 		menu.BoolOption("Manual Transmission Support", Settings::iktCompatible, { "Mod by ikt@gta5mods, if both mods enable compatibility mode, they will pass additional vehicle stats using the DECORATOR namespace. This isn't supported on some mp servers." });

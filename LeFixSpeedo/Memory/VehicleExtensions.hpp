@@ -19,13 +19,12 @@ public:
 	unsigned char GetTopGear(Vehicle handle);
 	bool GetHandbrake(Vehicle handle);
 
+    void GetOffsets();
 
 private:
-	// only run this once because patterns
-	void getOffsets();
 	eGameVersion gameVersion = getGameVersion();
 
-	uint64_t handlingOffset;
-	uint64_t rpmOffset;
+	int handlingOffset = 0;
+	int rpmOffset = 0;
 
 };

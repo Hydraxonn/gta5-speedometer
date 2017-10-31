@@ -28,6 +28,11 @@ VehicleData::~VehicleData()
 {
 }
 
+void VehicleData::init() 
+{
+    ext.GetOffsets();
+}
+
 void VehicleData::update(Vehicle currentVehicle)
 {
 	if (veh != currentVehicle && currentVehicle != 0)
@@ -61,7 +66,7 @@ void VehicleData::update(Vehicle currentVehicle)
 		//TankVolume
 		updateTankVolume();
 	}
-	if (veh != 0)
+	if (currentVehicle != 0 && ENTITY::DOES_ENTITY_EXIST(currentVehicle))
 	{
 		updateDashboard();
 		updateVelocity();
@@ -190,16 +195,16 @@ void VehicleData::updateGear()
 		if (Settings::iktCompatible)
 		{
 			// Shift up down indicator
-			if (DECORATOR::DECOR_EXIST_ON(veh, "hunt_score"))
+			if (DECORATOR::DECOR_EXIST_ON(veh, "mt_shift_indicator"))
 			{
-				int x = DECORATOR::DECOR_GET_INT(veh, "hunt_score");
+				int x = DECORATOR::DECOR_GET_INT(veh, "mt_shift_indicator");
 				shiftDown = (x == 2);
 				shiftUp = (x == 1);
 			}
 			// Non-native neutral gear postion
-			if (DECORATOR::DECOR_EXIST_ON(veh, "hunt_weapon"))
+			if (DECORATOR::DECOR_EXIST_ON(veh, "mt_neutral"))
 			{
-				int x = DECORATOR::DECOR_GET_INT(veh, "hunt_weapon");
+				int x = DECORATOR::DECOR_GET_INT(veh, "mt_neutral");
 				if (x == 1)
 				{
 					gear = 0;

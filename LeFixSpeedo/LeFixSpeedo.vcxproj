@@ -66,8 +66,7 @@
     <TargetExt>.asi</TargetExt>
     <OutDir>bin\$(Configuration)\</OutDir>
     <IntDir>tmp\$(Configuration)\</IntDir>
-    <IncludePath>D:\Programme\GitHub\GTAVMenuBase;D:\Programme\GitHub\ScriptHookV_SDK;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Programme\GitHub\ScriptHookV_SDK\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>D:\git\ScriptHookV_SDK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -80,6 +79,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NativeSpeedo_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>D:\git\GTAVMenuBase;D:\git\ScriptHookV_SDK;$(IncludePath)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

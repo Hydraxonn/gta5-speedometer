@@ -6,26 +6,23 @@
 #include "../Util/Logger.hpp"
 
 VehicleExtensions::VehicleExtensions() {
-	logger.SetFile("./LeFixSpeedo.log");
-	logger.Clear();
 	mem::init();
-	getOffsets();
 }
 
 BYTE *VehicleExtensions::GetAddress(Vehicle handle) {
 	return reinterpret_cast<BYTE *>(mem::GetAddressOfEntity(handle));
 }
 
-void VehicleExtensions::getOffsets() {
+void VehicleExtensions::GetOffsets() {
 	auto addr = mem::FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88",
 		"xxxx????xxxxxxx");
 	handlingOffset = *(int*)(addr + 0x16);
-	logger.Write("Handling Offset: " + std::to_string(handlingOffset));
+	logger.Writef("Handling Offset: 0x%X", handlingOffset);
 
 	addr = mem::FindPattern("\xF3\x44\x0F\x10\x93\x00\x00\x00\x00\xF3\x0F\x10\x0D",
 		"xxxxx????xxxx");
 	rpmOffset = *(int*)(addr + 5);
-	logger.Write("RPM Offset: " + std::to_string(rpmOffset));
+	logger.Writef("RPM Offset: 0x%X", rpmOffset);
 }
 
 float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
