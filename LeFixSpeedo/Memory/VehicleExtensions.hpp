@@ -1,10 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <cstdint>
 #include "../../../ScriptHookV_SDK/inc/types.h"
 #include "../../../ScriptHookV_SDK/inc/nativeCaller.h"
-
 
 class VehicleExtensions {
 public:

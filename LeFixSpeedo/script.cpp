@@ -10,6 +10,7 @@
 
 #include <menu.h>
 #include "Util/Logger.hpp"
+#include "Util/Versions.h"
 
 Player player;				//Reference to actual player
 Ped playerPed;				//Reference to actual ped
@@ -1113,6 +1114,7 @@ void initialize() {
     logger.SetFile(GetCurrentModulePath() + "LeFixSpeedo\\LeFixSpeedo.log");
     logger.Clear();
     logger.Write("LeFixSpeedo " + std::string(DISPLAY_VERSION));
+    logger.Write("Game version " + eGameVersionToString(getGameVersion()));
     vehData.init();
 	std::string path = GetCurrentModulePath(); // includes trailing slash
 	path = path + "LeFixSpeedo\\settings";
