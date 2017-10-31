@@ -26,5 +26,9 @@ private:
 
 	int handlingOffset = 0;
 	int rpmOffset = 0;
-
+	int fuelLevelOffset = 0;
+	int currentGearOffset = 0;
+	int topGearOffset = 0;
+	int throttleOffset = 0;
+	int handbrakeOffset = 0;
 };

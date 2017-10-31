@@ -23,6 +23,25 @@ void VehicleExtensions::GetOffsets() {
 		"xxxxx????xxxx");
 	rpmOffset = *(int*)(addr + 5);
 	logger.Writef("RPM Offset: 0x%X", rpmOffset);
+	
+	addr = mem::FindPattern("\x74\x26\x0F\x57\xC9", "xxxxx");
+	fuelLevelOffset = *(int*)(addr + 8);
+	logger.Writef("Fuel Level Offset: 0x%X", fuelLevelOffset);
+	
+	addr = mem::FindPattern("\x48\x8D\x8F\x00\x00\x00\x00\x4C\x8B\xC3\xF3\x0F\x11\x7C\x24",
+				"xxx????xxxxxxxx");
+	currentGearOffset = *(int*)(addr + 3) + 2;
+	logger.Writef("Current Gear Offset: 0x%X", currentGearOffset);
+	
+	topGearOffset = *(int*)(addr + 3) + 6;
+	logger.Writef("Top Gear Offset: 0x%X", topGearOffset);
+	
+	throttleOffset = *(int*)(addr + 3) + 0x44;
+	logger.Writef("Throttle Offset: 0x%X", throttleOffset);
+	
+	addr = mem::FindPattern("\x44\x8A\xAA\x00\x00\x00\x00\x0F\x2F\xFB", "xxx????xxx");
+	handbrakeOffset = *(int*)(addr + 3);
+	logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
 }
 
 float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
@@ -34,19 +53,13 @@ float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
 float VehicleExtensions::GetFuelLevel(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	auto offset = gameVersion >= G_VER_1_0_372_2_STEAM ? 0x768 : 0x758;
-	offset = gameVersion >= G_VER_1_0_877_1_STEAM ? 0x788 : offset;
-	offset = gameVersion >= G_VER_1_0_944_2_STEAM ? 0x7A8 : offset;
-	offset = gameVersion >= G_VER_1_0_1103_2_STEAM ? 0x7B8 : offset;
-	offset = gameVersion >= G_VER_1_0_1180_2_STEAM ? 0x7C8 : offset;
-
-	return *reinterpret_cast<float *>(address + offset);
+	return address == nullptr ? 0.0f : *reinterpret_cast<float*>(address + fuelLevelOffset);
 }
 
 uint64_t VehicleExtensions::GetHandlingPtr(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return *reinterpret_cast<uint64_t *>(address + handlingOffset);
+	return address == nullptr ? 0 : *reinterpret_cast<uint64_t*>(address + handlingOffset);
 }
 
 float VehicleExtensions::GetPetrolTankVolume(Vehicle handle) {
@@ -58,47 +71,23 @@ float VehicleExtensions::GetPetrolTankVolume(Vehicle handle) {
 uint16_t VehicleExtensions::GetGearCurr(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	auto offset = gameVersion >= G_VER_1_0_372_2_STEAM ? 0x7A2 : 0x792;
-	offset = gameVersion >= G_VER_1_0_877_1_STEAM ? 0x7C2 : offset;
-	offset = gameVersion >= G_VER_1_0_944_2_STEAM ? 0x7E2 : offset;
-	offset = gameVersion >= G_VER_1_0_1103_2_STEAM ? 0x7F2 : offset;
-	offset = gameVersion >= G_VER_1_0_1180_2_STEAM ? 0x812 : offset;
-
-	return address == nullptr ? 0 : *reinterpret_cast<const uint16_t *>(address + offset);
+	return address == nullptr ? 0 : *reinterpret_cast<uint16_t*>(address + currentGearOffset);
 }
 
 float VehicleExtensions::GetThrottle(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	auto offset = gameVersion >= G_VER_1_0_372_2_STEAM ? 0x7E4 : 0x7D4;
-	offset = gameVersion >= G_VER_1_0_877_1_STEAM ? 0x804 : offset;
-	offset = gameVersion >= G_VER_1_0_944_2_STEAM ? 0x824 : offset;
-	offset = gameVersion >= G_VER_1_0_1103_2_STEAM ? 0x834 : offset;
-	offset = gameVersion >= G_VER_1_0_1180_2_STEAM ? 0x854 : offset;
-
-	return *reinterpret_cast<float *>(address + offset);
+	return address == nullptr ? 0.0f : *reinterpret_cast<float*>(address + throttleOffset);
 }
 
-unsigned char VehicleExtensions::GetTopGear(Vehicle handle) {
+uint8_t VehicleExtensions::GetTopGear(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	auto offset = gameVersion >= G_VER_1_0_372_2_STEAM ? 0x7A6 : 0x796;
-	offset = gameVersion >= G_VER_1_0_877_1_STEAM ? 0x7C6 : offset;
-	offset = gameVersion >= G_VER_1_0_944_2_STEAM ? 0x7E6 : offset;
-	offset = gameVersion >= G_VER_1_0_1103_2_STEAM ? 0x7F6 : offset;
-	offset = gameVersion >= G_VER_1_0_1180_2_STEAM ? 0x816 : offset;
-
-	return address == nullptr ? 0 : *reinterpret_cast<const unsigned char *>(address + offset);
+	return address == nullptr ? 0 : *reinterpret_cast<uint8_t*>(address + topGearOffset);
 }
 
 bool VehicleExtensions::GetHandbrake(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	auto offset = gameVersion >= G_VER_1_0_372_2_STEAM ? 0x8BC : 0x8AC;
-	offset = gameVersion >= G_VER_1_0_877_1_STEAM ? 0x8DC : offset;
-	offset = gameVersion >= G_VER_1_0_944_2_STEAM ? 0x904 : offset;
-	offset = gameVersion >= G_VER_1_0_1103_2_STEAM ? 0x914 : offset;
-	offset = gameVersion >= G_VER_1_0_1180_2_STEAM ? 0x934 : offset;
-
-	return *reinterpret_cast<bool *>(address + offset);
+	return address == nullptr ? false : *reinterpret_cast<bool*>(address + handbrakeOffset);
 }
