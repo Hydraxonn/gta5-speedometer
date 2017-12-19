@@ -1057,6 +1057,11 @@ void calculateAlphaDmgFade()
 //Color Needles
 void calculateNeedleColor()
 {
+    if (vehData.veh == 0 || !ENTITY::DOES_ENTITY_EXIST(vehData.veh))
+    {
+        return;
+    }
+
 	isPrimColorValid = false;
 	if (vehData.vClass < 10)
 	{

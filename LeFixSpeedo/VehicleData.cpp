@@ -35,7 +35,12 @@ void VehicleData::init()
 
 void VehicleData::update(Vehicle currentVehicle)
 {
-	if (veh != currentVehicle && currentVehicle != 0)
+    if (currentVehicle == 0 || !ENTITY::DOES_ENTITY_EXIST(currentVehicle))
+    {
+        return;
+    }
+
+	if (veh != currentVehicle)
 	{
 		veh = currentVehicle; // New existing vehicle
 
@@ -66,17 +71,15 @@ void VehicleData::update(Vehicle currentVehicle)
 		//TankVolume
 		updateTankVolume();
 	}
-	if (currentVehicle != 0 && ENTITY::DOES_ENTITY_EXIST(currentVehicle))
-	{
-		updateDashboard();
-		updateVelocity();
-		updateVelocityVertical();
-		updateRpm();
-		updateFuel();
-		updateDamage();
-		updateGear();
-		updateHandbrake();
-	}
+
+	updateDashboard();
+	updateVelocity();
+	updateVelocityVertical();
+	updateRpm();
+	updateFuel();
+	updateDamage();
+	updateGear();
+	updateHandbrake();
 }
 
 std::string VehicleData::get_brand_name_from_ini(std::string liveryName)
