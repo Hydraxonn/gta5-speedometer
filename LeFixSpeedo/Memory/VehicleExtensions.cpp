@@ -12,7 +12,7 @@ BYTE *VehicleExtensions::GetAddress(Vehicle handle) {
 }
 
 void VehicleExtensions::GetOffsets() {
-	auto     addr = mem::FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88",
+	auto addr = mem::FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88",
         "xxxx????xxxxxxx");
     handlingOffset = addr == 0 ? 0 : *(int*)(addr + 0x16);
 	logger.Writef("Handling Offset: 0x%X", handlingOffset);
@@ -37,9 +37,9 @@ void VehicleExtensions::GetOffsets() {
 	throttleOffset = addr == 0 ? 0 : *(int*)(addr + 3) + 0x44;
 	logger.Writef("Throttle Offset: 0x%X", throttleOffset);
 	
-	addr = mem::FindPattern("\x44\x8A\xAA\x00\x00\x00\x00\x0F\x2F\xFB", "xxx????xxx");
-	handbrakeOffset = *(int*)(addr + 3);
-	logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
+    addr = mem::FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
+    handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 3);
+    logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
 }
 
 float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
