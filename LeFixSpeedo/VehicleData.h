@@ -10,7 +10,7 @@ class VehicleData
 public:
 	VehicleData();
 	~VehicleData();
-    void init();
+	void init();
 	void update(Vehicle currentVeh);
 
 	//Members

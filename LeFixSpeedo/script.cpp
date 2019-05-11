@@ -385,7 +385,7 @@ void setupTextures(){
 	texMatrix[VD_RAIL][KMH][1] = idCarSlow[KMH];
 	texMatrix[VD_RAIL][MPH][0] = idLinFast[MPH];
 	texMatrix[VD_RAIL][KMH][0] = idLinFast[KMH];
-    
+	
 	//Unit Text
 	idUnit[MPH] = create_texture("Velocity\\TextMph.png");
 	idUnit[KMH] = create_texture("Velocity\\TextKmh.png");
@@ -1057,10 +1057,10 @@ void calculateAlphaDmgFade()
 //Color Needles
 void calculateNeedleColor()
 {
-    if (vehData.veh == 0 || !ENTITY::DOES_ENTITY_EXIST(vehData.veh))
-    {
-        return;
-    }
+	if (vehData.veh == 0 || !ENTITY::DOES_ENTITY_EXIST(vehData.veh))
+	{
+		return;
+	}
 
 	isPrimColorValid = false;
 	if (vehData.vClass < 10)
@@ -1116,11 +1116,11 @@ void onMenuExit()
 	isInMenu = false;
 }
 void initialize() {
-    logger.SetFile(GetCurrentModulePath() + "LeFixSpeedo\\LeFixSpeedo.log");
-    logger.Clear();
-    logger.Write("LeFixSpeedo " + std::string(DISPLAY_VERSION));
-    logger.Write("Game version " + eGameVersionToString(getGameVersion()));
-    vehData.init();
+	logger.SetFile(GetCurrentModulePath() + "LeFixSpeedo\\LeFixSpeedo.log");
+	logger.Clear();
+	logger.Write("LeFixSpeedo " + std::string(DISPLAY_VERSION));
+	logger.Write("Game version " + eGameVersionToString(getGameVersion()));
+	vehData.init();
 	std::string path = GetCurrentModulePath(); // includes trailing slash
 	path = path + "LeFixSpeedo\\settings";
 

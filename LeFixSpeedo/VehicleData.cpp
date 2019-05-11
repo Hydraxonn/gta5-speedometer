@@ -30,15 +30,15 @@ VehicleData::~VehicleData()
 
 void VehicleData::init() 
 {
-    ext.GetOffsets();
+	ext.GetOffsets();
 }
 
 void VehicleData::update(Vehicle currentVehicle)
 {
-    if (currentVehicle == 0 || !ENTITY::DOES_ENTITY_EXIST(currentVehicle))
-    {
-        return;
-    }
+	if (currentVehicle == 0 || !ENTITY::DOES_ENTITY_EXIST(currentVehicle))
+	{
+		return;
+	}
 
 	if (veh != currentVehicle)
 	{
