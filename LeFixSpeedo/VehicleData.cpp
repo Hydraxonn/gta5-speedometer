@@ -147,7 +147,7 @@ void VehicleData::updateRpm()
 {
 	if (vDomain == VD_ROAD)
 	{
-		rpm = ext.GetCurrentRPM(veh);
+		rpm = isDashboardOn ? ext.GetCurrentRPM(veh) : 0.0f;
 	}
 	else
 	{
