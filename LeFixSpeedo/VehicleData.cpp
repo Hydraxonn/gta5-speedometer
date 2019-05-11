@@ -3,6 +3,7 @@
 #include "Settings.h"
 #include "Util\INIutils.hpp"
 #include "Util\UIutils.hpp"
+#include "MTIntegration.h"
 #include <inc/natives.h>
 
 VehicleData::VehicleData()
@@ -195,23 +196,15 @@ void VehicleData::updateGear()
 		if (Settings::featHBrake && handbrake) gear = 0;
 
 		// Manual Transmissions mod compatibility (@ikt)
-		if (Settings::iktCompatible)
+		if (Settings::iktCompatible && MT::FunctionsPresent)
 		{
-			// Shift up down indicator
-			if (DECORATOR::DECOR_EXIST_ON(veh, "mt_shift_indicator"))
+			int x = MT::GetShiftIndicator();
+			shiftDown = (x == 2);
+			shiftUp = (x == 1);
+
+			if (MT::NeutralGear())
 			{
-				int x = DECORATOR::DECOR_GET_INT(veh, "mt_shift_indicator");
-				shiftDown = (x == 2);
-				shiftUp = (x == 1);
-			}
-			// Non-native neutral gear postion
-			if (DECORATOR::DECOR_EXIST_ON(veh, "mt_neutral"))
-			{
-				int x = DECORATOR::DECOR_GET_INT(veh, "mt_neutral");
-				if (x == 1)
-				{
-					gear = 0;
-				}
+				gear = 0;
 			}
 		}
 		else

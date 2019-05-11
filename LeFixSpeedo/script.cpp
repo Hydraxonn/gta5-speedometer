@@ -12,6 +12,8 @@
 #include "Util/Logger.hpp"
 #include "Util/Versions.h"
 
+#include "MTIntegration.h"
+
 Player player;				//Reference to actual player
 Ped playerPed;				//Reference to actual ped
 
@@ -1137,6 +1139,28 @@ void initialize() {
 	read_ini_extended();
 
 	setupTextures();
+
+	//Gears.asi integration
+	MT::Module = GetModuleHandle("Gears.asi");
+	if (MT::Module)
+	{
+		MT::FunctionsPresent = true;
+		
+		MT::NeutralGear = (bool(*)(void))MT::CheckAddr(MT::Module, "MT_NeutralGear");
+		MT::FunctionsPresent &= (MT::NeutralGear != nullptr);
+
+		MT::GetShiftIndicator = (int(*)(void))MT::CheckAddr(MT::Module, "MT_GetShiftIndicator");
+		MT::FunctionsPresent &= (MT::GetShiftIndicator != nullptr);
+
+		if (MT::FunctionsPresent) 
+		{
+			logger.Write("Manual Transmission functions present");
+		}
+		else 
+		{
+			logger.Write("Manual Transmission functions not present");
+		}
+	}
 }
 
 void update()

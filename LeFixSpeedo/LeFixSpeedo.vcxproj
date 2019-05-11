@@ -31,6 +31,7 @@
     <ClInclude Include="..\..\GTAVMenuBase\thirdparty\simpleini\SimpleIni.h" />
     <ClInclude Include="Memory\NativeMemory.hpp" />
     <ClInclude Include="Memory\VehicleExtensions.hpp" />
+    <ClInclude Include="MTIntegration.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="speedoEnums.h" />
     <ClInclude Include="Util\INIutils.hpp" />
