@@ -13,17 +13,17 @@ BYTE *VehicleExtensions::GetAddress(Vehicle handle) {
 
 void VehicleExtensions::GetOffsets() {
 	auto addr = mem::FindPattern("\x3C\x03\x0F\x85\x00\x00\x00\x00\x48\x8B\x41\x20\x48\x8B\x88",
-        "xxxx????xxxxxxx");
-    handlingOffset = addr == 0 ? 0 : *(int*)(addr + 0x16);
+		"xxxx????xxxxxxx");
+	handlingOffset = addr == 0 ? 0 : *(int*)(addr + 0x16);
 	logger.Writef("Handling Offset: 0x%X", handlingOffset);
 
-    addr = mem::FindPattern("\x76\x03\x0F\x28\xF0\xF3\x44\x0F\x10\x93",
-        "xxxxxxxxxx");
-    rpmOffset = addr == 0 ? 0 : *(int*)(addr + 10);
+	addr = mem::FindPattern("\x76\x03\x0F\x28\xF0\xF3\x44\x0F\x10\x93",
+		"xxxxxxxxxx");
+	rpmOffset = addr == 0 ? 0 : *(int*)(addr + 10);
 	logger.Writef("RPM Offset: 0x%X", rpmOffset);
 	
-    addr = mem::FindPattern("\x74\x26\x0F\x57\xC9", "xxxxx");
-    fuelLevelOffset = addr == 0 ? 0 : *(int*)(addr + 8);
+	addr = mem::FindPattern("\x74\x26\x0F\x57\xC9", "xxxxx");
+	fuelLevelOffset = addr == 0 ? 0 : *(int*)(addr + 8);
 	logger.Writef("Fuel Level Offset: 0x%X", fuelLevelOffset);
 	
 	addr = mem::FindPattern("\x48\x8D\x8F\x00\x00\x00\x00\x4C\x8B\xC3\xF3\x0F\x11\x7C\x24",
@@ -34,12 +34,14 @@ void VehicleExtensions::GetOffsets() {
 	topGearOffset = addr == 0 ? 0 : *(int*)(addr + 3) + 6;
 	logger.Writef("Top Gear Offset: 0x%X", topGearOffset);
 	
-	throttleOffset = addr == 0 ? 0 : *(int*)(addr + 3) + 0x44;
+	addr = mem::FindPattern("\x76\x03\x0F\x28\xF0\xF3\x44\x0F\x10\x93",
+		"xxxxxxxxxx"); 
+	throttleOffset = addr == 0 ? 0 : *(int*)(addr + 10) + 0x10;
 	logger.Writef("Throttle Offset: 0x%X", throttleOffset);
 	
-    addr = mem::FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
-    handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 3);
-    logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
+	addr = mem::FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
+	handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 3);
+	logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
 }
 
 float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
