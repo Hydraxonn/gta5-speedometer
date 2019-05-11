@@ -7,7 +7,7 @@ std::string Settings::_filepath;
 ////CONSTANT////
 const float Settings::hudSizeConst = 0.2f;
 const float Settings::ledSizeConst = 0.07f;
-const float Settings::needleRealisticDPS = 7.0f; //Degrees per second
+const float Settings::needleRealisticDPS = 1.57f; //Radians per second
 
 //// NOT CONSTANT ////
 
