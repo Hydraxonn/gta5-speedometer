@@ -2,14 +2,15 @@
 #include <Windows.h>
 #include "Util/Logger.hpp"
 
-namespace MT 
+////Gears.asi integration/////
+class MT
 {
-    ////Gears.asi integration/////
-    static HMODULE Module;
-    static bool FunctionsPresent;
+public:
+    inline static HMODULE Module = nullptr;
+    inline static bool FunctionsPresent = false;
 
-    static bool(*NeutralGear)(void) = nullptr;
-    static int(*GetShiftIndicator)(void) = nullptr;
+    inline static bool(*NeutralGear)(void) = nullptr;
+    inline static int(*GetShiftIndicator)(void) = nullptr;
 
     static void* CheckAddr(HMODULE lib, const char* funcName)
     {
@@ -22,4 +23,4 @@ namespace MT
         logger.Writef("%s available", funcName);
         return mtFunc;
     }
-}
+};

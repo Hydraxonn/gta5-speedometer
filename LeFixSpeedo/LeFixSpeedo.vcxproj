@@ -90,7 +90,7 @@
       <AdditionalDependencies>ScriptHookV.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(TargetDir)$(ProjectName).asi" "D:\Programme\Grand Theft Auto 5 (R2P)\" /Y</Command>
+      <Command>xcopy "$(TargetDir)$(ProjectName).asi" "D:\Games\Steam\steamapps\common\Grand Theft Auto V\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
