@@ -1257,7 +1257,6 @@ void updateMenu()
 		menu.Subtitle(std::string(DISPLAY_VERSION) + " by LeFix");
 
 		menu.BoolOption("Mod Enabled", Settings::isActive, { "Enable/Disable the entire mod." });
-		menu.BoolOption("Manual Transmission Support", Settings::iktCompatible, { "Mod by ikt@gta5mods, if both mods enable compatibility mode, they will pass additional vehicle stats using the DECORATOR namespace. This isn't supported on some mp servers." });
 		menu.MenuOption("Units", "unitsmenu", { "Set the units displayed on the different HUDs." });
 		menu.MenuOption("Speedfactor", "speedfactormenu", { "Distort displayed velocity by factors, may be used if displayed velocity 'feels' wrong or while screen capturing." });
 		menu.MenuOption("Toggle HUD", "togglemenu", { "Toggle HUD visibility for different type of vehicles." });
@@ -1272,6 +1271,7 @@ void updateMenu()
 		menu.MenuOption("Features", "featuremenu", { "Toggle multiple optional features." });
 		menu.MenuOption("Visual", "visualmenu", { "Color and alpha values." });
 		menu.MenuOption("Placement", "placementmenu", { "All settings related to size and screen position." });
+		menu.BoolOption("Manual Transmission Support", Settings::iktCompatible, { "Mod by ikt@gta5mods, if both mods enable compatibility mode, they will pass additional vehicle stats." });
 	}
 
 	if (menu.CurrentMenu("speedfactormenu"))
