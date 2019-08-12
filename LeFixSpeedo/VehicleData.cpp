@@ -3,7 +3,7 @@
 #include "Settings.h"
 #include "Util\INIutils.hpp"
 #include "Util\UIutils.hpp"
-#include "MTIntegration.h"
+#include "Compatibility.h"
 #include <inc/natives.h>
 
 VehicleData::VehicleData()
@@ -196,7 +196,7 @@ void VehicleData::updateGear()
 		if (Settings::featHBrake && handbrake) gear = 0;
 
 		// Manual Transmissions mod compatibility (@ikt)
-		if (Settings::iktCompatible && MT::FunctionsPresent)
+		if (Settings::iktCompatible && MT::GearsModule && MT::Available)
 		{
 			int x = MT::GetShiftIndicator();
 			shiftDown = (x == 2);
