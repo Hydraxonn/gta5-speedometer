@@ -42,6 +42,7 @@ void setupCompatibility() {
     logger.Writef("Setting up Manual Transmission compatibility");
     MT::GearsModule = GetModuleHandle("Gears.asi");
     if (!MT::GearsModule) {
+        MT::Available = false;
         logger.Writef("Gears.asi not found");
         return;
     }
@@ -96,7 +97,7 @@ void setupCompatibility() {
 }
 
 void releaseCompatibility() {
-    if (MT::GearsModule && MT::Available) {
+    if (MT::GearsModule) {
         MT::GearsModule = nullptr;
         MT::Available = false;
     }

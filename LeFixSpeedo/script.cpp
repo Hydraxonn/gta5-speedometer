@@ -1131,6 +1131,7 @@ void initialize() {
 	menu.RegisterOnMain(std::bind(onMenuEnter));
 	menu.RegisterOnExit(std::bind(onMenuExit));
 	menu.ReadSettings();
+    menu.Initialize();
 
 	Settings::SetFile(path);
 	Settings::LoadGlobal();

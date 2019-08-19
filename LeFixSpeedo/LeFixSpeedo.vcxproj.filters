@@ -38,6 +38,9 @@
     <ClCompile Include="Compatibility.cpp">
       <Filter>Compatibility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\GTAVMenuBase\menumemutils.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="script.h" />
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="Compatibility.h">
       <Filter>Compatibility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\GTAVMenuBase\menumemutils.hpp">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
