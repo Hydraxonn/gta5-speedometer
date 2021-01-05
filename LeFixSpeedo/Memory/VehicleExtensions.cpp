@@ -38,56 +38,86 @@ void VehicleExtensions::GetOffsets() {
 		"xxxxxxxxxx"); 
 	throttleOffset = addr == 0 ? 0 : *(int*)(addr + 10) + 0x10;
 	logger.Writef("Throttle Offset: 0x%X", throttleOffset);
-	
-	addr = mem::FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
-	handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 3);
+
+	if (getGameVersion() >= 59) {
+		addr = mem::FindPattern("\x8A\xC2\x24\x01\xC0\xE0\x04\x08\x81", "xxxxxxxxx");
+		handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 19);
+	}
+	else {
+		addr = mem::FindPattern("\x44\x88\xA3\x00\x00\x00\x00\x45\x8A\xF4", "xxx????xxx");
+		handbrakeOffset = addr == 0 ? 0 : *(int*)(addr + 3);
+	}
 	logger.Writef("Handbrake Offset: 0x%X", handbrakeOffset);
 }
 
 float VehicleExtensions::GetCurrentRPM(Vehicle handle) {
 	auto address = GetAddress(handle);
-
-	return address == nullptr ? 0.0f : *reinterpret_cast<const float *>(address + rpmOffset);
+	
+	if (address == nullptr || rpmOffset == 0)
+		return 0.0f;
+	
+	return *reinterpret_cast<const float *>(address + rpmOffset);
 }
 
 float VehicleExtensions::GetFuelLevel(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? 0.0f : *reinterpret_cast<float*>(address + fuelLevelOffset);
+	if (address == nullptr || fuelLevelOffset == 0)
+		return 0.0f;
+
+	return *reinterpret_cast<float*>(address + fuelLevelOffset);
 }
 
 uint64_t VehicleExtensions::GetHandlingPtr(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? 0 : *reinterpret_cast<uint64_t*>(address + handlingOffset);
+	if (address == nullptr || handlingOffset == 0)
+		return 0;
+	
+	return *reinterpret_cast<uint64_t*>(address + handlingOffset);
 }
 
 float VehicleExtensions::GetPetrolTankVolume(Vehicle handle) {
 	auto address = GetHandlingPtr(handle);
-	if (address == 0) return 0.0f;
+
+	if (address == 0)
+		return 0.0f;
+	
 	return *reinterpret_cast<float *>(address + hOffsets.fPetrolTankVolume);
 }
 
 uint16_t VehicleExtensions::GetGearCurr(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? 0 : *reinterpret_cast<uint16_t*>(address + currentGearOffset);
+	if (address == nullptr || currentGearOffset == 0)
+		return 0;
+	
+	return *reinterpret_cast<uint16_t*>(address + currentGearOffset);
 }
 
 float VehicleExtensions::GetThrottle(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? 0.0f : *reinterpret_cast<float*>(address + throttleOffset);
+	if (address == nullptr || throttleOffset == 0)
+		return 0.0f;
+	
+	return *reinterpret_cast<float*>(address + throttleOffset);
 }
 
 uint8_t VehicleExtensions::GetTopGear(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? 0 : *reinterpret_cast<uint8_t*>(address + topGearOffset);
+	if (address == nullptr || topGearOffset == 0)
+		return 0;
+	
+	return *reinterpret_cast<uint8_t*>(address + topGearOffset);
 }
 
 bool VehicleExtensions::GetHandbrake(Vehicle handle) {
 	auto address = GetAddress(handle);
 
-	return address == nullptr ? false : *reinterpret_cast<bool*>(address + handbrakeOffset);
+	if (address == nullptr || handbrakeOffset == 0)
+		return false;
+	
+	return *reinterpret_cast<bool*>(address + handbrakeOffset);
 }
