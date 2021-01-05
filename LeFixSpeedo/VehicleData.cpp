@@ -49,7 +49,7 @@ void VehicleData::update(Vehicle currentVehicle)
 		updateVehicleDomainAndClass();
 
 		//Get livery name
-		char* c = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh));
+		const char* c = VEHICLE::GET_DISPLAY_NAME_FROM_VEHICLE_MODEL(ENTITY::GET_ENTITY_MODEL(veh));
 		std::string liveryHelp(c, std::find(c, c + 16, '\0'));
 		livery = liveryHelp;
 

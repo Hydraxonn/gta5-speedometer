@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include "../../../ScriptHookV_SDK/inc/types.h"
-#include "../../../ScriptHookV_SDK/inc/nativeCaller.h"
+#include <inc/main.h>
+#include <inc/types.h>
 
 class VehicleExtensions {
 public:
@@ -17,7 +17,7 @@ public:
 	unsigned char GetTopGear(Vehicle handle);
 	bool GetHandbrake(Vehicle handle);
 
-    void GetOffsets();
+	void GetOffsets();
 
 private:
 	eGameVersion gameVersion = getGameVersion();

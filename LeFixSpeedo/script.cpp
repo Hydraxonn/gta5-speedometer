@@ -597,13 +597,13 @@ int levelNeedle = -9992;
 void updateRotation(float &currentRot, float aimedRot)
 {
 	//Realism
-	if (aimedRot < currentRot - Settings::needleRealisticDPS*GAMEPLAY::GET_FRAME_TIME())
+	if (aimedRot < currentRot - Settings::needleRealisticDPS*MISC::GET_FRAME_TIME())
 	{
-		currentRot = currentRot - Settings::needleRealisticDPS*GAMEPLAY::GET_FRAME_TIME();
+		currentRot = currentRot - Settings::needleRealisticDPS*MISC::GET_FRAME_TIME();
 	}
-	else if (aimedRot > currentRot + Settings::needleRealisticDPS*GAMEPLAY::GET_FRAME_TIME())
+	else if (aimedRot > currentRot + Settings::needleRealisticDPS*MISC::GET_FRAME_TIME())
 	{
-		currentRot = currentRot + Settings::needleRealisticDPS*GAMEPLAY::GET_FRAME_TIME();
+		currentRot = currentRot + Settings::needleRealisticDPS*MISC::GET_FRAME_TIME();
 	}
 	else
 	{
@@ -744,13 +744,13 @@ void set_pla_vert_rot()
 	}
 
 	//Realism
-	if (aimRot < vertRot - GAMEPLAY::GET_FRAME_TIME())
+	if (aimRot < vertRot - MISC::GET_FRAME_TIME())
 	{
-		vertRot = vertRot - GAMEPLAY::GET_FRAME_TIME();
+		vertRot = vertRot - MISC::GET_FRAME_TIME();
 	}
-	else if (aimRot > vertRot + GAMEPLAY::GET_FRAME_TIME())
+	else if (aimRot > vertRot + MISC::GET_FRAME_TIME())
 	{
-		vertRot = vertRot + GAMEPLAY::GET_FRAME_TIME();
+		vertRot = vertRot + MISC::GET_FRAME_TIME();
 	}
 	else
 	{
@@ -943,7 +943,7 @@ void fadeOut()
 	if (fade > 0.0f)
 	{
 		//Fadout out speed 1.0f
-		fade -= 2.0f*GAMEPLAY::GET_FRAME_TIME();
+		fade -= 2.0f*MISC::GET_FRAME_TIME();
 		//Valid Borders
 		if (fade < 0.0f)
 		{
@@ -960,7 +960,7 @@ void fadeIn()
 	if (fade < 1.0f)
 	{
 		//Fade in speed 0.5
-		fade += 0.5f*GAMEPLAY::GET_FRAME_TIME();
+		fade += 0.5f*MISC::GET_FRAME_TIME();
 		//Valid Borders
 		if (fade < 0.0f)
 		{
@@ -983,25 +983,25 @@ bool isFadeOut()
 	// check if player ped exists and control is on (e.g. not in a cutscene)
 	if (!ENTITY::DOES_ENTITY_EXIST(playerPed) || !PLAYER::IS_PLAYER_CONTROL_ON(player)) return true;
 	// check for player ped death and player arrest
-	if (ENTITY::IS_ENTITY_DEAD(playerPed) || PLAYER::IS_PLAYER_BEING_ARRESTED(player, TRUE)) return true;
+	if (ENTITY::IS_ENTITY_DEAD(playerPed, false) || PLAYER::IS_PLAYER_BEING_ARRESTED(player, TRUE)) return true;
 	// check if player's using mobilphone
 	if (PED::IS_PED_RUNNING_MOBILE_PHONE_TASK(playerPed)) return true;
 	// check if vehicle name isn't being displayed
-	if (!isInMenu && UI::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentVehicleName)) return true;
+	if (!isInMenu && HUD::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentVehicleName)) return true;
 	// check if player is surfing on the internet (workaround: is vehicle roll disabled and not using mousesteering)
-	if (!CONTROLS::IS_CONTROL_ENABLED(2, eControl::ControlVehicleFlyRollLeftRight) && !CONTROLS::IS_CONTROL_PRESSED(2, eControl::ControlVehicleMouseControlOverride)) return true;
+	if (!PAD::IS_CONTROL_ENABLED(2, eControl::ControlVehicleFlyRollLeftRight) && !PAD::IS_CONTROL_PRESSED(2, eControl::ControlVehicleMouseControlOverride)) return true;
 	// check for first person view
 	if (CAM::GET_FOLLOW_VEHICLE_CAM_VIEW_MODE() == 4 && !Settings::isShownInFpv) return true;
 	// check if player is passenger
 	if (isPassenger && !Settings::isShownAsPassenger) return true;
 	//check if character wheel is shown (button pressed and money shown, avoid dpad bugs)
-	if (CONTROLS::IS_CONTROL_PRESSED(2, eControl::ControlCharacterWheel) && UI::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentCash)) return true;
+	if (PAD::IS_CONTROL_PRESSED(2, eControl::ControlCharacterWheel) && HUD::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentCash)) return true;
 	return false;
 }
 //Alpha Day/Night
 void calculateAlphaTime(){
-	int hour = TIME::GET_CLOCK_HOURS();
-	int min = TIME::GET_CLOCK_MINUTES();
+	int hour = CLOCK::GET_CLOCK_HOURS();
+	int min = CLOCK::GET_CLOCK_MINUTES();
 	float time = hour + min / 60.0f;
 	if (time < 4.0f)
 	{
@@ -1043,14 +1043,14 @@ void calculateAlphaDmgFade()
 		//Increase Red
 		if (isInc)
 		{
-			aDmg = aDmg + GAMEPLAY::GET_FRAME_TIME() * diff * Settings::dmgFrequency;
+			aDmg = aDmg + MISC::GET_FRAME_TIME() * diff * Settings::dmgFrequency;
 			//Switch if Max is reached
 			isInc = aDmg < aDmgMax;
 		}
 		//Decrease Red
 		else
 		{
-			aDmg = aDmg - GAMEPLAY::GET_FRAME_TIME() * diff * Settings::dmgFrequency;
+			aDmg = aDmg - MISC::GET_FRAME_TIME() * diff * Settings::dmgFrequency;
 			//Switch if Min is reached
 			isInc = aDmg < aDmgMin;
 		}
@@ -1131,7 +1131,7 @@ void initialize() {
 	menu.RegisterOnMain(std::bind(onMenuEnter));
 	menu.RegisterOnExit(std::bind(onMenuExit));
 	menu.ReadSettings();
-    menu.Initialize();
+	menu.Initialize();
 
 	Settings::SetFile(path);
 	Settings::LoadGlobal();
@@ -1171,7 +1171,7 @@ void update()
 			if (Settings::usePrimaryColor) calculateNeedleColor();
 
 			// Passenger?
-			isPassenger = !(VEHICLE::GET_PED_IN_VEHICLE_SEAT(vehData.veh, -1) == playerPed);
+			isPassenger = !(VEHICLE::GET_PED_IN_VEHICLE_SEAT(vehData.veh, -1, false) == playerPed);
 
 			// Enable high speedo for modded cars replaced for slow cras
 			checkIsFasterThanExpected();

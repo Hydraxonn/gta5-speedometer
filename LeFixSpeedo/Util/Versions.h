@@ -65,6 +65,44 @@ static std::vector<std::string> GameVersionString = {
 
     "VER_1_0_1365_1_STEAM",     // 40
     "VER_1_0_1365_1_NOSTEAM",   // 41
+
+    "VER_1_0_1493_0_STEAM",     // 42
+    "VER_1_0_1493_0_NOSTEAM",   // 43
+
+    "VER_1_0_1493_1_STEAM",     // 44
+    "VER_1_0_1493_1_NOSTEAM",   // 45
+
+    "VER_1_0_1604_0_STEAM",     // 46
+    "VER_1_0_1604_0_NOSTEAM",   // 47
+
+    "VER_1_0_1604_1_STEAM",     // 48
+    "VER_1_0_1604_1_NOSTEAM",   // 49
+
+    //"VER_1_0_1734_0_STEAM",   // XX
+    //"VER_1_0_1734_0_NOSTEAM", // XX
+
+    "VER_1_0_1737_0_STEAM",     // 50
+    "VER_1_0_1737_0_NOSTEAM",   // 51
+
+    "VER_1_0_1737_6_STEAM",     // 52
+    "VER_1_0_1737_6_NOSTEAM",   // 53
+
+    "VER_1_0_1868_0_STEAM",     // 54
+    "VER_1_0_1868_0_NOSTEAM",   // 55
+
+    "VER_1_0_1868_1_STEAM",     // 56
+    "VER_1_0_1868_1_NOSTEAM",   // 57
+
+    "VER_1_0_1868_4_EGS",       // 58
+
+    "VER_1_0_2060_0_STEAM",     // 59
+    "VER_1_0_2060_0_NOSTEAM",   // 60
+
+    "VER_1_0_2060_1_STEAM",     // 61
+    "VER_1_0_2060_1_NOSTEAM",   // 62
+
+    "VER_1_0_2189_0_STEAM",     // 63
+    "VER_1_0_2189_0_NOSTEAM",   // 64
 };
 
 enum G_GameVersion : int {
@@ -130,6 +168,44 @@ enum G_GameVersion : int {
 
     G_VER_1_0_1365_1_STEAM,     // 40
     G_VER_1_0_1365_1_NOSTEAM,   // 41
+
+    G_VER_1_0_1493_0_STEAM,     // 42
+    G_VER_1_0_1493_0_NOSTEAM,   // 43
+
+    G_VER_1_0_1493_1_STEAM,     // 44
+    G_VER_1_0_1493_1_NOSTEAM,   // 45
+
+    G_VER_1_0_1604_0_STEAM,     // 46
+    G_VER_1_0_1604_0_NOSTEAM,   // 47
+
+    G_VER_1_0_1604_1_STEAM,     // 48
+    G_VER_1_0_1604_1_NOSTEAM,   // 49
+
+    //G_VER_1_0_1734_0_STEAM,   // XX
+    //G_VER_1_0_1734_0_NOSTEAM, // XX
+
+    G_VER_1_0_1737_0_STEAM,     // 50
+    G_VER_1_0_1737_0_NOSTEAM,   // 51
+
+    G_VER_1_0_1737_6_STEAM,     // 52
+    G_VER_1_0_1737_6_NOSTEAM,   // 53
+
+    G_VER_1_0_1868_0_STEAM,     // 54
+    G_VER_1_0_1868_0_NOSTEAM,   // 55
+
+    G_VER_1_0_1868_1_STEAM,     // 56
+    G_VER_1_0_1868_1_NOSTEAM,   // 57
+
+    G_VER_1_0_1868_4_EGS,       // 58
+
+    G_VER_1_0_2060_0_STEAM,     // 59
+    G_VER_1_0_2060_0_NOSTEAM,   // 60
+
+    G_VER_1_0_2060_1_STEAM,     // 61
+    G_VER_1_0_2060_1_NOSTEAM,   // 62
+
+    G_VER_1_0_2189_0_STEAM,     // 63
+    G_VER_1_0_2189_0_NOSTEAM,   // 64
 };
 
 static std::string eGameVersionToString(int version) {
