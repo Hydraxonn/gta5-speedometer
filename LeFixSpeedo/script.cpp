@@ -881,10 +881,10 @@ void draw_car_gear(){
 		if (vehData.gearMax == vehData.gear) antiRed = 0.5f;
 
 		if (vehData.handbrake) {//if car is in park draw P letter in place of gear
-			drawTexture(idPark, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
+			drawTexture(idPark, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 		}
 		else if (MT_GetShiftMode() == 3 && vehData.gear >= 1) {//if car is in automatic mode AND in gear, draw D letter in place of gear
-			drawTexture(idDrive, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
+			drawTexture(idDrive, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 
 		}else {//car is in Sequential or H Pattern, draw gear numbers
 			drawTexture(idGear[vehData.gear + 1], 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax*aTimeAdjust);
@@ -895,18 +895,19 @@ void draw_car_gear(){
 		}
 		
 	}	
-	switch (MT_GetShiftMode()) {
-	case 1:
-		drawTexture(idSeqMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
-		break;
-	case 2:
-		drawTexture(idHMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
-		break;
-	case 3:
-		drawTexture(idAutoMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
-		break;
+	if (MT_IsActive) {//only draw shift mode if MT is activated
+		switch (MT_GetShiftMode()) {
+		case 1:
+			drawTexture(idSeqMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			break;
+		case 2:
+			drawTexture(idHMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			break;
+		case 3:
+			drawTexture(idAutoMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			break;
+		}
 	}
-	
 }
 void draw_car_dmg()
 {
