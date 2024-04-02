@@ -1,0 +1,71 @@
+name: MSBuild
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: ./LeFixSpeedo.sln 
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Check for Secret availability
+      id: secret-check
+      # perform secret check & put boolean result as an output
+      shell: bash
+      run: |
+        if [ "${{ secrets.ARCHIVE_PASSWORD }}" != '' ]; then
+          echo "available=true" >> $GITHUB_OUTPUT;
+        else
+          echo "available=false" >> $GITHUB_OUTPUT;
+        fi
+    
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}} /p:Platform=x64 /p:PostBuildEventUseInBuild=false
+
+    - name: Copy build result to stage dir
+      if: ${{ steps.secret-check.outputs.available == 'true' }}
+      run: |
+        cp Gears/bin/Gears.asi stage/Gears.asi
+        cp Gears/bin/Gears.pdb stage/Gears.pdb
+
+    - name: Create build artifact archive
+      if: ${{ steps.secret-check.outputs.available == 'true' }}
+      uses: TheDoctor0/zip-release@0.7.0
+      with:
+        filename: ${{ github.sha }}.zip
+        directory: stage/
+        custom: -p${{ secrets.ARCHIVE_PASSWORD }}
+
+    - name: Upload build artifact
+      if: ${{ steps.secret-check.outputs.available == 'true' }}
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        # Artifact name
+        name: LeFixSpeedo-${{ github.sha }}
+        path: |
+          stage/${{ github.sha }}.zip
