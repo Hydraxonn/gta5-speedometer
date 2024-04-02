@@ -1,5 +1,5 @@
 #include "script.h"
-
+#include "../thirdparty/MT/Gears/ManualTransmission.h"
 #include "VehicleData.h"
 #include "speedoEnums.h"
 #include "Settings.h"
@@ -7,7 +7,6 @@
 #include "Util\UIutils.hpp"
 #include "menu.h"
 #include "Math.h"
-
 #include <menu.h>
 #include "Util/Logger.hpp"
 #include "Util/Versions.h"
@@ -16,7 +15,7 @@
 
 Player player;				//Reference to actual player
 Ped playerPed;				//Reference to actual ped
-
+using VExt = VehicleExtensions;
 NativeMenu::Menu menu;
 VehicleData vehData;
 
@@ -25,7 +24,6 @@ bool isPassenger = false;
 int addFast = 0;				//Vehicle faster than expected, next Speedo
 float screenCorrect = 1.0f;
 float hudSize = 1.0f;
-
 //Velocity Values Picture Based (Unit...)
 float velPicMax[3][2][3];
 float velPicCarFast[2][2][3];
@@ -39,6 +37,8 @@ float velMatrix[numVEHDOMAIN][numUNIT][3][2][3];
 int texMatrix[5][4][3];		//Texture references: Vehicle Type, Unit, Fast
 int idUnit[3];				//Unit: Text
 int idGear[10];				//Gear Nums: R, N, 1 - 8
+int idPark;					//park
+int idAutoMode, idSeqMode, idHMode;
 int idGearShiftDown, idGearShiftUp;
 int idPlaVert;				//Vertical Velocity Scale+Text
 int idRpmText;				//RPM: Text
@@ -392,8 +392,13 @@ void setupTextures(){
 	idUnit[MPH] = create_texture("Velocity\\TextMph.png");
 	idUnit[KMH] = create_texture("Velocity\\TextKmh.png");
 	idUnit[KNO] = create_texture("Velocity\\TextKno.png");
+	//shift modes
+	idAutoMode = create_texture("GearNumbers\\AutoMode.png");
+	idSeqMode = create_texture("GearNumbers\\SeqMode.png");
+	idHMode = create_texture("GearNumbers\\HMode.png");
 
 	//Gear
+	idPark = create_texture("GearNumbers\\GearP.png");
 	idGear[0] = create_texture("GearNumbers\\GearR.png");
 	idGear[1] = create_texture("GearNumbers\\GearN.png");
 	for (int x = 1; x < 9; x++){
@@ -873,9 +878,25 @@ void draw_car_gear(){
 		float antiRed = 1.0f;
 		if (vehData.gearMax == vehData.gear) antiRed = 0.5f;
 
-		drawTexture(idGear[vehData.gear + 1], 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax*aTimeAdjust);
+		if (vehData.handbrake) {
+			drawTexture(idPark, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
+		}
+		else {
+			drawTexture(idGear[vehData.gear + 1], 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax*aTimeAdjust);
+		}
+		
 	}		
-
+	switch (MT_GetShiftMode()) {
+	case 1:
+		drawTexture(idSeqMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		break;
+	case 2:
+		drawTexture(idHMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		break;
+	case 3:
+		drawTexture(idAutoMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		break;
+	}
 	if (vehData.shiftDown)	drawTexture(idGearShiftDown,  0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax*aTimeAdjust);
 	if (vehData.shiftUp)	drawTexture(idGearShiftUp,    0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax*aTimeAdjust);
 }
@@ -986,8 +1007,8 @@ bool isFadeOut()
 	if (ENTITY::IS_ENTITY_DEAD(playerPed, false) || PLAYER::IS_PLAYER_BEING_ARRESTED(player, TRUE)) return true;
 	// check if player's using mobilphone
 	if (PED::IS_PED_RUNNING_MOBILE_PHONE_TASK(playerPed)) return true;
-	// check if vehicle name isn't being displayed
-	if (!isInMenu && HUD::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentVehicleName)) return true;
+	// check if vehicle name isn't being displayed ****HYDRAXONN'S EDIT**** for automatic compatibility with MinimapVehicleController, this is now based on whether or not the minimap is being drawn
+	//if (!isInMenu && HUD::IS_HUD_COMPONENT_ACTIVE(eHudComponent::HudComponentVehicleName)) return true;
 	// check if player is surfing on the internet (workaround: is vehicle roll disabled and not using mousesteering)
 	if (!PAD::IS_CONTROL_ENABLED(2, eControl::ControlVehicleFlyRollLeftRight) && !PAD::IS_CONTROL_PRESSED(2, eControl::ControlVehicleMouseControlOverride)) return true;
 	// check for first person view
@@ -1181,7 +1202,7 @@ void update()
 	isFadeOut() ? fadeOut() : fadeIn();
 
 	//HUD invisible -> dont draw
-	if (fade > 0.0f)
+	if (fade > 0.0f && HUD::IS_MINIMAP_RENDERING())
 	{
 		// Needle Color
 		set_needle_col();
