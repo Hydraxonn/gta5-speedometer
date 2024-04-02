@@ -37,8 +37,8 @@ float velMatrix[numVEHDOMAIN][numUNIT][3][2][3];
 int texMatrix[5][4][3];		//Texture references: Vehicle Type, Unit, Fast
 int idUnit[3];				//Unit: Text
 int idGear[10];				//Gear Nums: R, N, 1 - 8
-int idPark;					//park
-int idDrive;
+int idPark;					//Dark
+int idDrive;				//Drive
 int idAutoMode, idSeqMode, idHMode;
 int idGearShiftDown, idGearShiftUp;
 int idPlaVert;				//Vertical Velocity Scale+Text
@@ -883,26 +883,27 @@ void draw_car_gear(){
 		if (vehData.handbrake) {//if car is in park draw P letter in place of gear
 			drawTexture(idPark, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
 		}
-		else if (MT_GetShiftMode() == 3) {//if car is in automatic mode, draw D letter in place of gear
+		else if (MT_GetShiftMode() == 3 && vehData.gear >= 1) {//if car is in automatic mode AND in gear, draw D letter in place of gear
 			drawTexture(idDrive, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
 
-		}else {
+		}else {//car is in Sequential or H Pattern, draw gear numbers
 			drawTexture(idGear[vehData.gear + 1], 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax*aTimeAdjust);
+			if (vehData.gear >= 1) {//only draw shift indicators when car is in drive
+				if (vehData.shiftDown)	drawTexture(idGearShiftDown, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+				if (vehData.shiftUp)	drawTexture(idGearShiftUp, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			}
 		}
 		
 	}	
-	if (vehData.shiftDown)	drawTexture(idGearShiftDown, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
-	if (vehData.shiftUp)	drawTexture(idGearShiftUp, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
-
 	switch (MT_GetShiftMode()) {
 	case 1:
-		drawTexture(idSeqMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		drawTexture(idSeqMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 		break;
 	case 2:
-		drawTexture(idHMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		drawTexture(idHMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 		break;
 	case 3:
-		drawTexture(idAutoMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+		drawTexture(idAutoMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 		break;
 	}
 	
