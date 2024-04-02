@@ -38,6 +38,7 @@ int texMatrix[5][4][3];		//Texture references: Vehicle Type, Unit, Fast
 int idUnit[3];				//Unit: Text
 int idGear[10];				//Gear Nums: R, N, 1 - 8
 int idPark;					//park
+int idDrive;
 int idAutoMode, idSeqMode, idHMode;
 int idGearShiftDown, idGearShiftUp;
 int idPlaVert;				//Vertical Velocity Scale+Text
@@ -398,6 +399,7 @@ void setupTextures(){
 	idHMode = create_texture("GearNumbers\\HMode.png");
 
 	//Gear
+	idDrive = create_texture("GearNumbers\\Drive.png");
 	idPark = create_texture("GearNumbers\\GearP.png");
 	idGear[0] = create_texture("GearNumbers\\GearR.png");
 	idGear[1] = create_texture("GearNumbers\\GearN.png");
@@ -878,14 +880,20 @@ void draw_car_gear(){
 		float antiRed = 1.0f;
 		if (vehData.gearMax == vehData.gear) antiRed = 0.5f;
 
-		if (vehData.handbrake) {
+		if (vehData.handbrake) {//if car is in park draw P letter in place of gear
 			drawTexture(idPark, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
 		}
-		else {
+		else if (MT_GetShiftMode() == 3) {//if car is in automatic mode, draw D letter in place of gear
+			drawTexture(idDrive, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax * aTimeAdjust);
+
+		}else {
 			drawTexture(idGear[vehData.gear + 1], 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, antiRed, antiRed, Settings::alphaFrontMax*aTimeAdjust);
 		}
 		
-	}		
+	}	
+	if (vehData.shiftDown)	drawTexture(idGearShiftDown, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+	if (vehData.shiftUp)	drawTexture(idGearShiftUp, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+
 	switch (MT_GetShiftMode()) {
 	case 1:
 		drawTexture(idSeqMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
@@ -897,8 +905,7 @@ void draw_car_gear(){
 		drawTexture(idAutoMode, 0, levelGear, 0.19f, centerX, centerY, posX + 0.01f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 		break;
 	}
-	if (vehData.shiftDown)	drawTexture(idGearShiftDown,  0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax*aTimeAdjust);
-	if (vehData.shiftUp)	drawTexture(idGearShiftUp,    0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax*aTimeAdjust);
+	
 }
 void draw_car_dmg()
 {
