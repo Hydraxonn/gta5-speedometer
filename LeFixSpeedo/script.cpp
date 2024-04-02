@@ -1,5 +1,5 @@
 #include "script.h"
-#include "../thirdparty/MT/Gears/ManualTransmission.h"
+#include "../../GTAVManualTransmission\Gears\ManualTransmission.h"
 #include "VehicleData.h"
 #include "speedoEnums.h"
 #include "Settings.h"
