@@ -869,7 +869,6 @@ void draw_car_gear(){
 		stopTexture(idGear[prevGear + 1], 0);
 		prevGear = vehData.gear;
 	}
-
 	//If rpm is displayed analogue, and shift up/down indicator is on, the gear will flash
 	if (false)//lastShiftIndicator > GetTickCount()-400 && Settings::featRpm == RPM_ANLG && (GetTickCount() % 400) < 220)
 	{
@@ -893,21 +892,18 @@ void draw_car_gear(){
 				if (vehData.shiftUp)	drawTexture(idGearShiftUp, 0, levelGear, size, centerX, centerY, posX, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 			}
 		}
-		
 	}	
-	if (MT_IsActive) {//only draw shift mode if MT is activated
 		switch (MT_GetShiftMode()) {
 		case 1:
-			drawTexture(idSeqMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			drawTexture(idSeqMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.009f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 			break;
 		case 2:
-			drawTexture(idHMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			drawTexture(idHMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.009f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 			break;
 		case 3:
-			drawTexture(idAutoMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.0085f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
+			drawTexture(idAutoMode, 0, levelGear, 0.18f, centerX, centerY, posX + 0.009f, posY, 0.0f, 1.0f, 1.0f, 1.0f, Settings::alphaFrontMax * aTimeAdjust);
 			break;
 		}
-	}
 }
 void draw_car_dmg()
 {
